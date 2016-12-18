@@ -160,9 +160,13 @@ public class SQLiteConnection: Connection {
                     }
                 }
 
-                var singleRow = [Any]()
+                var singleRow = [Any?]()
                 for i in 0..<numCols {
-                    singleRow.append(String(cString: (colText?[i])!))
+                    if let colText = colText, let value = colText[i] {
+                        singleRow.append(String(cString: value))
+                    } else {
+                        singleRow.append(nil)
+                    }
                 }
 
                 values?.pointee.results.append(singleRow)
